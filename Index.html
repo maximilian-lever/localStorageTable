@@ -1,0 +1,123 @@
+<html>
+    <head>
+        <style>            
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 50%;
+            }   
+            td, th {
+                border: 1px solid rgb(0,0,0);
+                text-align: left;
+                padding: 8px;
+            }   
+            tr:nth-child(even) {
+                background-color: rgb(200,200,200);
+            }
+        </style>
+    </head>
+    <body>
+        <table id="table">
+            <form>
+                <input type="text" id="name" placeholder="Input name">
+            </form>
+            <button id="submit">Submit</button>
+            <button id="clear">Clear</button>
+            <tr>
+                <td>Date</td>
+                <td>Name</td>
+            </tr>
+        </table>
+        <script>
+            var started = false,
+                index = 0,
+                row = new Array();
+
+            document.getElementById('submit').addEventListener("click", main);
+            document.getElementById('clear').addEventListener("click", clear);
+
+            function main(){
+                if (started === false){
+                    retrieveData();
+                    started = true;
+                }else if (started === true){
+                    pushEntry(index);
+                    saveData();
+                    addRow(index);
+                    index++;
+                }else{
+                    console.log('ERROR main().');
+                }
+                console.log('main() has run.');
+            }
+
+            function clear(){
+                localStorage.removeItem('savedTable');
+                localStorage.removeItem('rowArray');
+                row = new Array();
+                index = 0;
+                console.log('clear() has run.')
+            }
+
+            function multidimensionalArray(i){
+                row[i] = new Array();
+                console.log('multidimensionalArray() has run.');
+            }
+
+            function doubleDigits(i){
+                if(i < 10){
+                    return "0" + i;
+                }else{
+                    return i;
+                }
+            }
+
+            function pushEntry(i){
+                var d = new Date(),
+                    year = (d.getFullYear() - 2000),
+                    month = (d.getMonth() + 1),
+                    day = doubleDigits(d.getDate()),
+                    hour = doubleDigits(d.getHours()),
+                    minute = doubleDigits(d.getMinutes()),
+                    second = doubleDigits(d.getSeconds());
+
+                multidimensionalArray(index);// this could be moved in to main();
+
+                row[i][0] = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
+                row[i][1] = document.getElementById('name').value;
+
+                console.log('pushEntry() has run.')
+            }
+
+            function saveData(){
+                localStorage.setItem('savedTable', JSON.stringify(row));
+                localStorage.setItem('rowArray', row.length);
+                console.log("saveData() has run.");
+            }
+
+            function addRow(i){
+                var row = document.getElementById('table').insertRow(1),
+                    cell1 = row.insertCell(0),
+                    cell2 = row.insertCell(1);
+
+                cell1.innerHTML = row[i][0];
+                cell2.innerHTML = row[i][1];
+                console.log('addBet() has run.');
+            }
+
+            function retrieveData(){
+                if (localStorage.getItem('rowArray')){// if rowArray has a value then the condition is true
+                    var indexLength = index - 1;
+                    index = localStorage.getItem('rowArray');
+                }
+                for(var i = 0; i <= indexLength; i++){
+                    row[i] = JSON.parse(localStorage.getItem('savedTable'))[i];
+                    addRow(i);
+                }
+                console.log("retrieveData() has run.");
+            }
+
+            main();
+        </script>
+    </body>
+</html>
