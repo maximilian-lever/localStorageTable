@@ -4,7 +4,7 @@
             table {
                 font-family: arial, sans-serif;
                 border-collapse: collapse;
-                width: 50%;
+                width: 16%;
             }   
             td, th {
                 border: 1px solid rgb(0,0,0);
@@ -96,10 +96,10 @@
             }
 
             function addRow(i){
-                var row = document.getElementById('table').insertRow(1),
-                    cell1 = row.insertCell(0),
-                    cell2 = row.insertCell(1);
-
+                var tableRow = document.getElementById('table').insertRow(1),
+                    cell1 = tableRow.insertCell(0),
+                    cell2 = tableRow.insertCell(1);
+                
                 cell1.innerHTML = row[i][0];
                 cell2.innerHTML = row[i][1];
                 console.log('addBet() has run.');
@@ -110,7 +110,7 @@
                     var indexLength = index - 1;
                     index = localStorage.getItem('rowArray');
                 }
-                for(var i = 0; i <= indexLength; i++){
+                for(var i = 0; i <= indexLength; i++){// this isnt working
                     row[i] = JSON.parse(localStorage.getItem('savedTable'))[i];
                     addRow(i);
                 }
