@@ -22,7 +22,7 @@
                 <input type="text" id="name" placeholder="Input name">
             </form>
             <button id="submit">Submit</button>
-            <button id="clear">Clear</button>
+            <button id="clear">Clear Table</button>
             <tr>
                 <td>Date</td>
                 <td>Name</td>
@@ -107,10 +107,9 @@
 
             function retrieveData(){
                 if (localStorage.getItem('rowArray')){// if rowArray has a value then the condition is true
-                    var indexLength = index - 1;
                     index = localStorage.getItem('rowArray');
                 }
-                for(var i = 0; i <= indexLength; i++){// this isnt working
+                for(var i = 0; i <= (index - 1); i++){// this isnt working
                     row[i] = JSON.parse(localStorage.getItem('savedTable'))[i];
                     addRow(i);
                 }
