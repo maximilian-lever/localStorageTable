@@ -41,6 +41,7 @@
                     retrieveData();
                     started = true;
                 }else if (started === true){
+                    multidimensionalArray(index);
                     pushEntry(index);
                     saveData();
                     addRow(index);
@@ -52,10 +53,15 @@
             }
 
             function clear(){
+                for(var i = 2;document.querySelector('tr:nth-child(' + i + ')');i++){
+                    document.querySelector('tr:nth-child(' + i + ')').deleteCell(1);
+                    document.querySelector('tr:nth-child(' + i + ')').deleteCell(0);
+                }
                 localStorage.removeItem('savedTable');
                 localStorage.removeItem('rowArray');
                 row = new Array();
                 index = 0;
+                
                 console.log('clear() has run.')
             }
 
@@ -74,14 +80,12 @@
 
             function pushEntry(i){
                 var d = new Date(),
-                    year = (d.getFullYear() - 2000),
-                    month = (d.getMonth() + 1),
+                    year = doubleDigits((d.getFullYear() - 2000)),
+                    month = doubleDigits((d.getMonth() + 1)),
                     day = doubleDigits(d.getDate()),
                     hour = doubleDigits(d.getHours()),
                     minute = doubleDigits(d.getMinutes()),
                     second = doubleDigits(d.getSeconds());
-
-                multidimensionalArray(index);// this could be moved in to main();
 
                 row[i][0] = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
                 row[i][1] = document.getElementById('name').value;
@@ -109,7 +113,7 @@
                 if (localStorage.getItem('rowArray')){// if rowArray has a value then the condition is true
                     index = localStorage.getItem('rowArray');
                 }
-                for(var i = 0; i <= (index - 1); i++){// this isnt working
+                for(var i = 0; i <= (index - 1); i++){
                     row[i] = JSON.parse(localStorage.getItem('savedTable'))[i];
                     addRow(i);
                 }
